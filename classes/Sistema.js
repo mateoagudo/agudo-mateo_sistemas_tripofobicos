@@ -1,44 +1,51 @@
 class Sistema {
   constructor() {
-    background(235, 200, 180);
+    this.posSistema = createVector(random(width), random(height));
+    this.noiseTimeX = random(200, 300);
+    this.noiseTimeY = random(100);
+    this.tiempoDeVidaSistema = Math.ceil(random(500, 800));
+    this.estaMuerto = false;
 
-    this.pos = createVector(random(width), random(height));
-    this.diamInicial = random(50, 100);
-    this.color = color(30, random(5, 25), 5);
-    this.trazo = color(random(175, 200), random(150, 200), 50);
-    this.noiseTime = random(0, 100);
-    this.ps = [];
-    this.maximoDeParticulas = 28;
+    //Agregar particulas
+    this.p = new Particula();
   }
 
   update() {
+    // Aumentar el tiempo
+    this.noiseTimeX += 0.001;
+    this.noiseTimeY += 0.0008;
+
     //Actualizar posicion
-
-    this.noiseTime += 0.0005;
-    this.pos.x = map(noise(this.noiseTime), 0, 1, 0, width);
-    this.pos.y = map(noise(this.noiseTime + 10), 0, 1, 0, height);
-
-    //Agregar particulas
-    // if (this.ps.length <= this.maximoDeParticulas) {
-    // }
-    this.p = new Particula(
-      this.pos.x,
-      this.pos.y,
-      this.diamInicial,
-      this.color,
-      this.trazo
+    this.posSistema.x = map(
+      noise(this.noiseTimeX),
+      0,
+      1,
+      0 - width * 0.1,
+      width * 1.1
     );
-    this.ps.push(this.p);
+    this.posSistema.y = map(noise(this.noiseTimeY), 0, 1, 0, height);
+
+    //Sacar particulas muertas
+    this.tiempoDeVidaSistema -= 1;
+    if (this.tiempoDeVidaSistema <= 0) {
+      this.estaMuerto = true;
+      //   noFill();
+      //   stroke(255, 50);
+      //   strokeWeight(10);
+      //   circle(this.posSistema.x, this.posSistema.y, 10);
+    }
   }
 
   display() {
-    // push();
-    // translate(this.diamPos, 0);
-    // rotate(this.angPos);
-    // pop();
-    for (let i = 0; i < this.ps.length; i++) {
-      this.ps[i].display();
-      this.ps[i].update();
-    }
+    push();
+    translate(this.posSistema.x, this.posSistema.y);
+    this.p.update();
+    this.p.display();
+    pop();
+
+    // for (let i = 0; i < this.ps.length; i++) {
+    //     this.ps[i].display();
+    //     this.ps[i].update();
+    //   }
   }
 }
