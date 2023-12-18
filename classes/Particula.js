@@ -2,20 +2,17 @@ class Particula {
   constructor() {
     this.pos = [];
     this.diam = [];
-    this.diamInicial = random(50, 100);
+    this.diamInicial = random(50, 75);
     this.diamPrimeraFila = this.diamInicial;
     this.rotSegundaFila = 0;
     this.rotTerceraFila = 0;
     this.rotCuartaFila = 0;
 
     this.relleno = color(30, random(5, 25), 5);
-    this.trazo = color(random(200, 255), random(75, 225), 50);
+    this.trazo = color(225, random(50, 200), 25);
 
     this.tiempoDeVidaInicial = this.diamInicial;
     this.tiempoDeVida = this.tiempoDeVidaInicial;
-
-    // this.noiseTimeMosca = random(100);
-    // this.mosca = random() < 0.01 ? true : false;
   }
 
   update() {
@@ -70,15 +67,6 @@ class Particula {
       this.pos.push(this.posCuartaFila);
       this.diam.push(this.diamCuartaFila);
     }
-
-    // if (this.mosca) {
-    //   this.noiseTimeMosca += 0.001;
-    //   this.pos.x = map(noise(this.noiseTimeMosca), 0, 1, 0, width);
-    //   this.pos.y = map(noise(this.noiseTimeMosca + 10), 0, 1, 0, height);
-    //   // this.m = new Mosca(this.pos.x, this.pos.y, this.diamInicial);
-    //   // this.m.update();
-    //   // this.m.display();
-    // }
   }
 
   display() {

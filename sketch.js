@@ -1,24 +1,21 @@
 let ss = [];
-let d;
+let sistemamoscas = [];
+let sonidos = [];
 
-// let posSistema;
-// let noiseTime;
+function preload() {
+  soundFormats("wav", "mp3", "ogg");
+  sonidoMosco = loadSound("sonidos/0");
+  sonidoMuerteDeMosco = loadSound("sonidos/1");
+}
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  cnv = createCanvas(windowWidth, windowHeight);
+  cnv.mousePressed(presionado);
   angleMode(DEGREES);
   for (let i = 0; i < 2; i++) {
     let p = new Sistema();
     ss.push(p);
   }
-
-  d = new Mosca(windowWidth / 2, windowHeight / 2, 200);
-  // posSistema = createVector(random(width), random(height));
-  // noiseTime = random(100);
-  // p = new Sistema();
-  // s = new Sistema();
-  // d = new Sistema();
-  // background(0);
 }
 
 function draw() {
@@ -39,12 +36,43 @@ function draw() {
     ss[i].display();
   }
 
-  // push();
-  // translate(posSistema.x, posSistema.y);
+  for (let i = 0; i < sistemamoscas.length; i++) {
+    if (sistemamoscas[i].moscaMuerta) {
+      sistemamoscas.splice(i, 1);
 
-  // s.update();
-  // s.display();
-  // d.update();
-  // d.display();
-  // pop();
+      sonidoMuerteDeMosco.play();
+      sonidos[0].stop();
+    } else {
+      sistemamoscas[i].update();
+      sistemamoscas[i].display();
+      // print("funciona");
+    }
+  }
+}
+
+function presionado() {
+  let indiceSistema = Math.floor(random(ss.length));
+  let indicePosicion = Math.floor(random(ss[indiceSistema].p.pos.length));
+  let posicionParticula = ss[indiceSistema].p.pos[indicePosicion];
+  let posicionSistema = ss[indiceSistema].posSistema;
+  let posicionMosca = posicionParticula.add(posicionSistema);
+
+  let x = posicionMosca.x;
+  let y = posicionMosca.y;
+
+  let indiceTamano = Math.floor(random(ss[indiceSistema].p.diam.length));
+  let tamanoParticula = ss[indiceSistema].p.diam[indicePosicion];
+
+  let d = new Mosca(x, y, tamanoParticula);
+  sistemamoscas.push(d);
+  sonidoMosco.play();
+  sonidos.push(sonidoMosco);
+
+  // for (let i = 0; i < sistemamoscas.length; i++) {
+  //   if (sistemamoscas[i].moscaMuerta) {
+  //     sonidosMosco.stop();
+  //   } else {
+  //     sonidoMosco.play();
+  //   }
+  // }
 }
